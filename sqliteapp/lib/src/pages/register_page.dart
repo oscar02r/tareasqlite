@@ -23,6 +23,7 @@ class _RegisterPageState extends State<RegisterPage> {
           _createPhone()
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: _createFloatingAction(),
     );
   }
@@ -70,7 +71,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _createFloatingAction() {
     return FloatingActionButton(
-      onPressed: null
-      );
+     backgroundColor: Theme.of(context).backgroundColor,
+      child: Icon(Icons.add),
+       onPressed: () {
+
+       });
   }
 }

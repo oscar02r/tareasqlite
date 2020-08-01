@@ -41,7 +41,12 @@ class _HomePageState extends State<HomePage> {
       },
       items: [
         BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle), title: Text('Registrar')),
+            icon: Icon(
+              Icons.account_circle,
+              color: Theme.of(context).primaryColor,
+            )
+            , title: Text('Registrar')
+            ),
         BottomNavigationBarItem(
             icon: Icon(Icons.contacts), title: Text('Contactos'))
       ],

@@ -17,6 +17,11 @@ class MyApp extends StatelessWidget {
         'home'    :(BuildContext context) => HomePage(),
         'contact' :( BuildContext context) => ContactPage(),
       },
+      theme: ThemeData(
+        primaryColor: Colors.redAccent,
+        backgroundColor: Colors.redAccent,
+        
+      ),
     );
   }
 }
