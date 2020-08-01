@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqliteapp/src/models/contact_model.dart';
 
 class DBProvider {
   static Database _database;
@@ -23,14 +24,18 @@ class DBProvider {
 
     return openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute(
-        'CREATE TABLE Contacts('
-         'id INTEGER PRIMARY KEY,'
-         'name TEXT,'
-         'lastName TEXT,'
-         'pnone TEXT'
-         ')'
-      );
+      await db.execute('CREATE TABLE Contacts('
+          ' id INTEGER PRIMARY KEY,'
+          ' name TEXT,'
+          ' lastName TEXT,'
+          ' pnone TEXT'
+          ' )');
     });
+  }
+
+  insertContact(ContactModel contact) async {
+    final db = await database;
+    final res = db.insert('Contacts', contact.toJson());
+    return res;
   }
 }
