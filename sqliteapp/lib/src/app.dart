@@ -3,9 +3,6 @@ import 'package:sqliteapp/src/pages/contact_page.dart';
 import 'package:sqliteapp/src/pages/home_page.dart';
 
 
-
-
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
