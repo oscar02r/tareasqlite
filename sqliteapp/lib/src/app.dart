@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:sqliteapp/src/pages/contact_page.dart';
 import 'package:sqliteapp/src/pages/home_page.dart';
+
+
+
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -7,7 +12,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Sqlite App',
-      home: HomePage()
+      initialRoute: 'home',
+      routes: {
+        'home'    :(BuildContext context) => HomePage(),
+        'contact' :( BuildContext context) => ContactPage(),
+      },
     );
   }
 }

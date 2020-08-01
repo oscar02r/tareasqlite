@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sqliteapp/src/pages/contact_page.dart';
+import 'package:sqliteapp/src/pages/register_page.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -6,63 +8,43 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _page = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Registrar contacto'),
-          centerTitle: true,
-        ),
-        body: ListView(
-          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-          children: <Widget>[
-            _createName(),
-            Divider(),
-            _createLastName(),
-            Divider(),
-            _createPhone()
-          ],
-        ));
-  }
-
-  Widget _createName() {
-    return TextField(
-      autofocus: false,
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-          hintText: 'Nombre',
-          labelText: 'Nombre',
-          contentPadding: EdgeInsets.all(10.0)),
+      body: _callPage(_page),
+      bottomNavigationBar: _createBottomNavigation(),
     );
   }
 
-  Widget _createLastName() {
-    return TextField(
-      autofocus: false,
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-          hintText: 'Apellido',
-          labelText: 'Apellido',
-          contentPadding: EdgeInsets.all(10.0),
-          ),
-      onChanged: (value) {
+  Widget _callPage(int currentPage) {
+    switch (currentPage) {
+      case 0:
+        return RegisterPage();
+      case 1:
+        return ContactPage();
+
+      default:
+        return RegisterPage();
+    }
+  }
+
+  Widget _createBottomNavigation() {
+    return BottomNavigationBar(
+      currentIndex: _page,
+      onTap: (index) {
         setState(() {
-          print(value);
+         _page = index;
+         
         });
       },
-    );
-  }
-
-  Widget _createPhone() {
-    return TextField(
-      keyboardType: TextInputType.phone,
-      decoration: InputDecoration(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
-          hintText: 'Teléfono',
-          labelText: 'Teléfono',
-          contentPadding: EdgeInsets.all(10.0)),
+      items: [
+        BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle), title: Text('Registrar')),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.contacts), title: Text('Contactos'))
+      ],
     );
   }
 }
