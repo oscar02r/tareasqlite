@@ -77,19 +77,16 @@ class _RegisterPageState extends State<RegisterPage> {
         backgroundColor: Theme.of(context).backgroundColor,
         child: Icon(Icons.add),
         onPressed: () {
-       
           if (_name.text.isNotEmpty &&
               _lastName.text.isNotEmpty &&
               _phone.text.isNotEmpty) {
+            final contact = ContactModel(
+                name: _name.text, lastName: _lastName.text, phone: _phone.text);
 
-              final contact = ContactModel(
-                                         name: _name.text,
-                                         lastName: _lastName.text,
-                                         phone: _phone.text
-                                         );
-
-              DBProvider.db.insertContact(contact);
-               
+            DBProvider.db.insertContact(contact);
+            _name.clear();
+            _lastName.clear();
+            _phone.clear();
           }
         });
   }

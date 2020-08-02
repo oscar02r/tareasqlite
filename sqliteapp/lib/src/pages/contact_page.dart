@@ -1,21 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:sqliteapp/src/providers/db_provider.dart';
 
 class ContactPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          appBar: AppBar(
-            title: Text('Contactos'),
-            centerTitle: true,
-            ),
-          body: ListView(
-            children: <Widget>[
-              ListTile(
-                title: Text('Nombre'),
-                subtitle: Text('Telefono'),
-              )
-            ],
-      ),
-    );
+        appBar: AppBar(
+          title: Text('Contactos'),
+          centerTitle: true,
+        ),
+        body: FutureBuilder(
+            future: DBProvider.db.getContacts(),
+            builder: (context, AsyncSnapshot<List<ContactModel>> snapshot) {
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              final contacts = snapshot.data;
+
+              if (contacts.length == 0) {
+                return Center(
+                  child: Text('No hay informacion'),
+                );
+              }
+
+              return ListView.builder(
+                itemCount: contacts.length,
+                itemBuilder: (context, index) => ListTile(
+                  leading: Icon(Icons.contact_phone),
+                  title: Text(contacts[index ].name),
+                  subtitle: Text(contacts[index].phone),
+                )
+
+                
+                );
+            }));
   }
 }
