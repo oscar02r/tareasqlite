@@ -14,9 +14,9 @@ class ContactModel {
       );
 
   Map<String, dynamic> toJson() => {
-     "id": id, 
-     "name": name, 
-     "lastName":lastName,
-     "phone": phone
+     "id"       : id, 
+     "name"     : name, 
+     "lastName" :lastName,
+     "phone"    : phone
   };
 }

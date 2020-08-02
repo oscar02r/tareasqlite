@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sqliteapp/src/providers/db_provider.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -6,6 +7,10 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _lastName = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,6 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _createName() {
     return TextField(
+      controller: _name,
       autofocus: false,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
@@ -42,6 +48,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _createLastName() {
     return TextField(
+      controller: _lastName,
       autofocus: false,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
@@ -50,16 +57,12 @@ class _RegisterPageState extends State<RegisterPage> {
         labelText: 'Apellido',
         contentPadding: EdgeInsets.all(10.0),
       ),
-      onChanged: (value) {
-        setState(() {
-          print(value);
-        });
-      },
     );
   }
 
   Widget _createPhone() {
     return TextField(
+      controller: _phone,
       keyboardType: TextInputType.phone,
       decoration: InputDecoration(
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0)),
@@ -71,10 +74,23 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Widget _createFloatingAction() {
     return FloatingActionButton(
-     backgroundColor: Theme.of(context).backgroundColor,
-      child: Icon(Icons.add),
-       onPressed: () {
+        backgroundColor: Theme.of(context).backgroundColor,
+        child: Icon(Icons.add),
+        onPressed: () {
+       
+          if (_name.text.isNotEmpty &&
+              _lastName.text.isNotEmpty &&
+              _phone.text.isNotEmpty) {
 
-       });
+              final contact = ContactModel(
+                                         name: _name.text,
+                                         lastName: _lastName.text,
+                                         phone: _phone.text
+                                         );
+
+              DBProvider.db.insertContact(contact);
+               
+          }
+        });
   }
 }
