@@ -7,12 +7,24 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+
   final TextEditingController _name = TextEditingController();
   final TextEditingController _lastName = TextEditingController();
   final TextEditingController _phone = TextEditingController();
+  var edit;
+  String _title = 'Registrar';
 
   @override
   Widget build(BuildContext context) {
+    final ContactModel _contact = ModalRoute.of(context).settings.arguments;
+    edit = _contact;
+    if (edit != null) {
+      _name.text = _contact.name;
+      _lastName.text = _contact.lastName;
+      _phone.text = _contact.phone;
+      _title = 'Editar';
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Registrar contacto'),
@@ -25,11 +37,11 @@ class _RegisterPageState extends State<RegisterPage> {
           Divider(),
           _createLastName(),
           Divider(),
-          _createPhone()
+          _createPhone(),
+          Divider(),
+          _createButton(_contact)
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: _createFloatingAction(),
     );
   }
 
@@ -72,22 +84,40 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  Widget _createFloatingAction() {
-    return FloatingActionButton(
-        backgroundColor: Theme.of(context).backgroundColor,
-        child: Icon(Icons.add),
-        onPressed: () {
-          if (_name.text.isNotEmpty &&
-              _lastName.text.isNotEmpty &&
-              _phone.text.isNotEmpty) {
-            final contact = ContactModel(
-                name: _name.text, lastName: _lastName.text, phone: _phone.text);
+  Widget _createButton(ContactModel contact) {
+    final Color color = Colors.white;
+    return RaisedButton(
+      color: Theme.of(context).backgroundColor,
+      child: Text(_title, style: TextStyle(color: color)),
+      onPressed: () {
+        if (_name.text.isNotEmpty &&
+            _lastName.text.isNotEmpty &&
+            _phone.text.isNotEmpty &&
+            contact == null) {
+          final contact = ContactModel(
+              name: _name.text, lastName: _lastName.text, phone: _phone.text);
 
-            DBProvider.db.insertContact(contact);
-            _name.clear();
-            _lastName.clear();
-            _phone.clear();
-          }
-        });
+          DBProvider.db.insertContact(contact);
+        } else {
+          final editContact = ContactModel(
+              id: contact.id,
+              name: _name.text,
+              lastName: _lastName.text,
+              phone: _phone.text);
+          DBProvider.db.updateContact(editContact);
+           
+        }
+
+        _name.clear();
+        _lastName.clear();
+        _phone.clear();
+        contact.name = null;
+        contact.lastName = null;
+        contact.phone = null;
+         edit = null;
+         
+        
+      },
+    );
   }
 }

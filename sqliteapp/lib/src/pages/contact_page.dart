@@ -27,15 +27,26 @@ class ContactPage extends StatelessWidget {
               }
 
               return ListView.builder(
-                itemCount: contacts.length,
-                itemBuilder: (context, index) => ListTile(
-                  leading: Icon(Icons.contact_phone),
-                  title: Text(contacts[index ].name),
-                  subtitle: Text(contacts[index].phone),
-                )
-
-                
-                );
+                  itemCount: contacts.length,
+                  itemBuilder: (context, index) => Dismissible(
+                        key: UniqueKey(),
+                        background: Container(
+                          color: Colors.redAccent,
+                        ),
+                        onDismissed: (direction) =>
+                            DBProvider.db.deleteContact(contacts[index].id),
+                        child: ListTile(
+                          leading: Icon(Icons.contact_phone),
+                          title: Text(
+                              '${contacts[index].name} ${contacts[index].lastName}'
+                              ),
+                          subtitle: Text(contacts[index].phone),
+                          trailing: Icon(Icons.arrow_right),
+                          onTap: () {
+                            Navigator.pushNamed(context, 'home', arguments: contacts[index] );
+                          },
+                        ),
+                      ));
             }));
   }
 }
